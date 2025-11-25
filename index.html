@@ -522,8 +522,9 @@
                     try {
                         const finalRotation = rotation % 360;
                         const anglePerSegment = 360 / segments.length;
-                        // Direct calculation - segments start at top (0°) going clockwise
-                        const winnerIndex = Math.floor(finalRotation / anglePerSegment) % segments.length;
+                        // Pointer at top, calculate which segment it hits
+                        const adjustedRotation = (360 - finalRotation) % 360;
+                        const winnerIndex = Math.floor(adjustedRotation / anglePerSegment) % segments.length;
                         
                         if (segments[winnerIndex]) {
                             showWinner(segments[winnerIndex]);
