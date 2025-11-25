@@ -176,12 +176,21 @@
                 <div class="controls">
                     <h3>Wheel Options</h3>
                     <div id="segmentsList"></div>
-                    <button class="btn btn-secondary" onclick="addSegment()">+ Add Option</button>
-                    <button class="btn btn-secondary" onclick="randomizeColors()">🎨 Random Colors</button>
-                    <button class="btn btn-secondary" onclick="saveWheel()">💾 Save Wheel</button>
-                    <button class="btn btn-secondary" onclick="shareWheel()">🔗 Share Wheel</button>
-                    <button class="btn btn-secondary" onclick="toggleFullscreen()">🔍 Fullscreen</button>
-                    <button class="btn btn-secondary" onclick="toggleSound()" id="soundBtn">🔊 Sound ON</button>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
+                        <button class="btn btn-secondary" onclick="addSegment()">+ Add Option</button>
+                        <button class="btn btn-secondary" onclick="randomizeColors()">🎨 Random Colors</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
+                        <button class="btn btn-secondary" onclick="saveWheel()">💾 Save Wheel</button>
+                        <button class="btn btn-secondary" onclick="shareWheel()">🔗 Share Wheel</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
+                        <button class="btn btn-secondary" onclick="toggleFullscreen()">🔍 Fullscreen</button>
+                        <button class="btn btn-secondary" onclick="toggleSound()" id="soundBtn">🔊 Sound ON</button>
+                    </div>
                     <button id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()">🎯 SPIN THE WHEEL</button>
                     
                     <div style="margin-top: 20px;">
