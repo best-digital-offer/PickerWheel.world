@@ -178,7 +178,19 @@
                     <div id="segmentsList"></div>
                     <button class="btn btn-secondary" onclick="addSegment()">+ Add Option</button>
                     <button class="btn btn-secondary" onclick="randomizeColors()">🎨 Random Colors</button>
+                    <button class="btn btn-secondary" onclick="saveWheel()">💾 Save Wheel</button>
+                    <button class="btn btn-secondary" onclick="shareWheel()">🔗 Share Wheel</button>
+                    <button class="btn btn-secondary" onclick="toggleFullscreen()">🔍 Fullscreen</button>
+                    <button class="btn btn-secondary" onclick="toggleSound()" id="soundBtn">🔊 Sound ON</button>
                     <button id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()">🎯 SPIN THE WHEEL</button>
+                    
+                    <div style="margin-top: 20px;">
+                        <h4>Spin History</h4>
+                        <div id="spinHistory" style="max-height: 150px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 5px; font-size: 14px;">
+                            <p style="color: #6b7280; text-align: center;">No spins yet</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="clearHistory()" style="width: 100%; margin-top: 10px;">Clear History</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -574,10 +586,37 @@
             animate();
         }
 
+        let spinHistory = [];
+        
         function showWinner(winner) {
             document.getElementById('winnerText').textContent = winner.text;
             document.getElementById('winnerText').style.color = winner.color;
             document.getElementById('winnerDisplay').style.display = 'block';
+            
+            // Add to history
+            const timestamp = new Date().toLocaleTimeString();
+            spinHistory.unshift({ result: winner.text, time: timestamp, color: winner.color });
+            if (spinHistory.length > 10) spinHistory.pop();
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            const historyDiv = document.getElementById('spinHistory');
+            if (spinHistory.length === 0) {
+                historyDiv.innerHTML = '<p style="color: #6b7280; text-align: center;">No spins yet</p>';
+            } else {
+                historyDiv.innerHTML = spinHistory.map((item, index) => 
+                    `<div style="padding: 5px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between;">
+                        <span style="color: ${item.color}; font-weight: bold;">${item.result}</span>
+                        <span style="color: #6b7280; font-size: 12px;">${item.time}</span>
+                    </div>`
+                ).join('');
+            }
+        }
+        
+        function clearHistory() {
+            spinHistory = [];
+            updateHistoryDisplay();
         }
 
         function loadTemplate(type) {
@@ -665,6 +704,66 @@
         
         // Resize on window resize
         window.addEventListener('resize', resizeCanvas);
+        
+        // New Features
+        let soundEnabled = true;
+        
+        function saveWheel() {
+            const wheelData = {
+                segments: segments,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('savedWheel', JSON.stringify(wheelData));
+            alert('Wheel saved successfully!');
+        }
+        
+        function shareWheel() {
+            const wheelData = encodeURIComponent(JSON.stringify(segments));
+            const shareUrl = window.location.origin + window.location.pathname + '?wheel=' + wheelData;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Custom Picker Wheel',
+                    url: shareUrl
+                });
+            } else {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('Share link copied to clipboard!');
+                });
+            }
+        }
+        
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+        
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('soundBtn').textContent = soundEnabled ? '🔊 Sound ON' : '🔇 Sound OFF';
+        }
+        
+        // Load shared wheel from URL
+        function loadSharedWheel() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const wheelData = urlParams.get('wheel');
+            if (wheelData) {
+                try {
+                    const parsed = JSON.parse(decodeURIComponent(wheelData));
+                    segments = parsed;
+                    renderSegments();
+                    drawWheel();
+                } catch (e) {
+                    console.error('Failed to load shared wheel');
+                }
+            }
+        }
+        
+        // Load on page load
+        loadSharedWheel();
     </script>
 </body>
 </html>
