@@ -554,25 +554,37 @@
         function playSpinSound() {
             if (!soundEnabled) return;
             
-            // Create continuous spinning sound
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
             
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
+            // Create realistic spinning wheel sound with clicking
+            function createTickSound(time, pitch) {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                
+                osc.frequency.setValueAtTime(pitch, time);
+                gain.gain.setValueAtTime(0.1, time);
+                gain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
+                
+                osc.start(time);
+                osc.stop(time + 0.05);
+            }
             
-            // Spinning wheel sound - starts high, goes lower
-            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 3);
+            // Create series of ticks that slow down
+            let tickInterval = 0.05; // Start fast
+            let currentTime = audioContext.currentTime;
+            let pitch = 800;
             
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 3);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 3);
-            
-            spinAudio = { oscillator, gainNode, audioContext };
+            for (let i = 0; i < 60; i++) {
+                createTickSound(currentTime, pitch);
+                currentTime += tickInterval;
+                tickInterval *= 1.08; // Gradually slow down
+                pitch *= 0.99; // Slightly lower pitch
+                
+                if (tickInterval > 0.3) break; // Stop when too slow
+            }
         }
         
         function playWinSound() {
