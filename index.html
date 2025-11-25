@@ -165,7 +165,7 @@
 
         <div class="wheel-container">
             <div class="wheel-section">
-                <canvas id="wheelCanvas" class="wheel-canvas" width="400" height="400" style="touch-action: manipulation;"></canvas>
+                <canvas id="wheelCanvas" class="wheel-canvas" width="400" height="400" style="touch-action: manipulation; cursor: pointer;" onclick="spinWheel()"></canvas>
                 <div id="winnerDisplay" class="winner-display" style="display: none;">
                     <h3>🎉 Winner!</h3>
                     <div id="winnerText" class="winner-text"></div>
@@ -475,14 +475,21 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Center circle
+                // Center spin button
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, 20, 0, 2 * Math.PI);
-                ctx.fillStyle = '#ffffff';
+                ctx.arc(centerX, centerY, 40, 0, 2 * Math.PI);
+                ctx.fillStyle = spinning ? '#ef4444' : '#3b82f6';
                 ctx.fill();
-                ctx.strokeStyle = '#262626';
-                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
                 ctx.stroke();
+                
+                // Spin text
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('SPIN', centerX, centerY - 2);
+                ctx.fillText('🎯', centerX, centerY + 12);
             } catch (error) {
                 console.error('Error drawing wheel:', error);
             }
@@ -541,12 +548,63 @@
             drawWheel();
         }
 
+        // Add spinning sounds
+        let spinAudio = null;
+        
+        function playSpinSound() {
+            if (!soundEnabled) return;
+            
+            // Create continuous spinning sound
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Spinning wheel sound - starts high, goes lower
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 3);
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 3);
+            
+            spinAudio = { oscillator, gainNode, audioContext };
+        }
+        
+        function playWinSound() {
+            if (!soundEnabled) return;
+            
+            // Victory sound
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Happy victory sound
+            oscillator.frequency.setValueAtTime(523, audioContext.currentTime); // C5
+            oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1); // E5
+            oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2); // G5
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+        }
+        
         function spinWheel() {
             if (spinning || segments.length === 0) return;
             
             spinning = true;
             document.getElementById('spinBtn').disabled = true;
             document.getElementById('winnerDisplay').style.display = 'none';
+            playSpinSound();
             
             const spinAmount = 360 * 5 + Math.random() * 360;
             const duration = 3000;
@@ -592,6 +650,9 @@
             document.getElementById('winnerText').textContent = winner.text;
             document.getElementById('winnerText').style.color = winner.color;
             document.getElementById('winnerDisplay').style.display = 'block';
+            
+            // Play victory sound
+            playWinSound();
             
             // Add to history
             const timestamp = new Date().toLocaleTimeString();
