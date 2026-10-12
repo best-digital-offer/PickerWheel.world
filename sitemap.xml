@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.pickerwheel.world/</loc>
-    <lastmod>2026-10-12</lastmod>
+    <lastmod>2024-12-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -73,30 +73,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.pickerwheel.world/privacy-policy.html</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.pickerwheel.world/terms-of-service.html</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.pickerwheel.world/contact.html</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.pickerwheel.world/about.html</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.pickerwheel.world/blog/random-name-picker-guide.html</loc>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -125,5 +101,29 @@
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.pickerwheel.world/privacy-policy.html</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.pickerwheel.world/terms-of-service.html</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.pickerwheel.world/contact.html</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.pickerwheel.world/about.html</loc>
+    <lastmod>2024-12-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
