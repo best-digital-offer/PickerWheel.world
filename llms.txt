@@ -1,0 +1,32 @@
+# PickerWheel.world
+
+PickerWheel.world is a free browser-based random picker wheel for choosing names and options, making low-stakes decisions, and running classroom or group activities.
+
+## Main tool
+- https://www.pickerwheel.world/ — Random picker wheel, name selector, decision wheel, coin flip and random number use cases.
+
+## Blog and practical guides
+- https://www.pickerwheel.world/blog.html — Blog index.
+- https://www.pickerwheel.world/blog/classroom-picker-wheel-ideas.html — Classroom activity ideas for random picker wheels.
+- https://www.pickerwheel.world/blog/prize-wheel-giveaway-guide.html — Planning a transparent prize wheel giveaway.
+- https://www.pickerwheel.world/blog/psychology-random-decision-making.html — Random choices and decision-making.
+- https://www.pickerwheel.world/blog/rng-vs-picker-wheels-comparison.html — Random number generators compared with picker wheels.
+- https://www.pickerwheel.world/blog/team-building-random-picker-tools.html — Random team and group selection.
+- https://www.pickerwheel.world/blog/decision-fatigue-random-choice-solutions.html — Decision wheels for everyday, low-stakes choices.
+- https://www.pickerwheel.world/blog/color-psychology-picker-wheels.html — Color and usability considerations for picker wheels.
+- https://www.pickerwheel.world/blog/teaching-probability-spinner-wheels.html — Teaching probability with spinner wheels.
+- https://www.pickerwheel.world/blog/food-decision-wheels-restaurant-picker.html — Food and restaurant picker use cases.
+- https://www.pickerwheel.world/blog/true-randomness-picker-wheels-algorithms.html — Randomness, fairness, and algorithm limitations.
+- https://www.pickerwheel.world/blog/random-name-picker-guide.html — Step-by-step random name picker guide.
+- https://www.pickerwheel.world/blog/yes-no-wheel-when-to-use.html — Use cases and limits of a yes/no wheel.
+- https://www.pickerwheel.world/blog/random-number-picker-for-games.html — Random number picker rules for games.
+- https://www.pickerwheel.world/blog/classroom-group-generator-activities.html — Classroom group generator ideas.
+- https://www.pickerwheel.world/blog/private-online-picker-wheel-tips.html — Privacy considerations for online picker wheels.
+
+## Other pages
+- https://www.pickerwheel.world/about.html — About PickerWheel.world.
+- https://www.pickerwheel.world/contact.html — Contact.
+- https://www.pickerwheel.world/privacy-policy.html — Privacy policy.
+
+## Editorial notes
+The guides are practical educational resources. Random selection is appropriate for many low-stakes activities, but should not replace consent, safety procedures, legal requirements, or expert judgment for high-stakes decisions. Please use the live page as the source of truth for current tool functionality and site policies.
