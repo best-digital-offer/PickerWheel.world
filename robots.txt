@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://pickerwheel.world/sitemap.xml
+Sitemap: https://www.pickerwheel.world/sitemap.xml
