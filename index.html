@@ -1,23 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1891499156174839"
-     crossorigin="anonymous"></script>
-    
-</script>
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <meta name="msvalidate.01" content="60436F46C9D6DEB62B277CD0A1AF615D" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDTFQRJ8RT"></script>
+    <!-- Defer analytics and advertising until the page has loaded to protect initial rendering. -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-BDTFQRJ8RT');
-    </script>
+      (function () {
+        var started = false;
+        function loadThirdPartyScripts() {
+          if (started) return;
+          started = true;
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7908614123439291"
-     crossorigin="anonymous"></script>
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('config', 'G-BDTFQRJ8RT');
+
+          [
+            'ca-pub-1891499156174839',
+            'ca-pub-7908614123439291'
+          ].forEach(function (client) {
+            var script = document.createElement('script');
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + client;
+            document.head.appendChild(script);
+          });
+
+          var analytics = document.createElement('script');
+          analytics.async = true;
+          analytics.src = 'https://www.googletagmanager.com/gtag/js?id=G-BDTFQRJ8RT';
+          document.head.appendChild(analytics);
+        }
+
+        window.addEventListener('load', function () {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(loadThirdPartyScripts, { timeout: 2500 });
+          } else {
+            window.setTimeout(loadThirdPartyScripts, 1200);
+          }
+        }, { once: true });
+      })();
+    </script>
+    <link rel="alternate" type="application/json" title="PickerWheel agent capabilities" href="/agent-manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Picker Wheel - Spin the Wheel | Name Picker, Decision Maker, Coin Flip & RNG Generator</title>
@@ -211,7 +236,7 @@
 <body>
     <a class="skip-link" href="#main-content">Skip to wheel controls</a>
     <div class="container">
-        <main id="main-content" data-agent-scope="picker-wheel">
+        <main id="main-content" data-agent-scope="picker-wheel" data-agent-ready="true">
         <header class="header">
             <h1>🎯 Random Picker Wheel - Spin the Wheel Generator</h1>
             <p>Best Online Name Picker, Decision Maker, Coin Flip, Random Number Generator & Prize Wheel</p>
@@ -227,7 +252,7 @@
                     <div class="wheel-pointer"></div>
                     <canvas id="wheelCanvas" class="wheel-canvas" width="500" height="500" role="img" aria-label="Picker wheel with four options. Use the Spin the Wheel button to choose one." aria-describedby="wheelInstructions" style="touch-action: manipulation;">Your picker wheel is shown visually. Use the labeled option fields and Spin the Wheel button to operate it.</canvas>
                     <p id="wheelInstructions" class="sr-only">Edit an option's text or color with the labeled fields. Activate Spin the Wheel to select a result. The selected result is announced to screen readers.</p>
-                    <button type="button" class="wheel-center" onclick="spinWheel()" aria-label="Spin wheel" data-agent-action="spin-wheel" data-agent-target="spin-wheel">
+                    <button type="button" class="wheel-center" onclick="spinWheel()" aria-label="Spin wheel" data-agent-action="spin-wheel" data-agent-target="spin-wheel" data-agent-state="ready">
                         <span aria-hidden="true">SPIN</span>
                     </button>
                 </div>
@@ -237,7 +262,7 @@
                 </div>
                 <p id="winnerAnnouncement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
                 <p id="spinStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
-            </div>
+            </section>
 
             <section class="controls-section" aria-label="Wheel controls" data-agent-scope="wheel-controls">
                 <div class="controls">
@@ -258,7 +283,7 @@
                         <button type="button" class="btn btn-secondary" onclick="toggleFullscreen()" data-agent-action="toggle-fullscreen">🔍 Fullscreen</button>
                         <button type="button" class="btn btn-secondary" onclick="toggleSound()" id="soundBtn" aria-pressed="true" data-agent-action="toggle-sound">🔊 Sound ON</button>
                     </div>
-                    <button type="button" id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()" data-agent-action="spin-wheel" data-agent-target="spin-wheel">🎯 SPIN THE WHEEL</button>
+                    <button type="button" id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()" data-agent-action="spin-wheel" data-agent-target="spin-wheel" data-agent-state="ready">🎯 SPIN THE WHEEL</button>
                     
                     <div style="margin-top: 20px;">
                         <h4>Spin History</h4>
@@ -786,12 +811,18 @@
         
         function spinWheel() {
             if (spinning || segments.length === 0) {
-                if (segments.length === 0) document.getElementById('spinStatus').textContent = 'Add at least one option before spinning.';
+                if (segments.length === 0) {
+                    document.getElementById('spinStatus').textContent = 'Add at least one option before spinning.';
+                    document.getElementById('spinBtn').setAttribute('data-agent-state', 'needs-options');
+                    document.querySelector('.wheel-center').setAttribute('data-agent-state', 'needs-options');
+                }
                 return;
             }
             
             spinning = true;
             document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinBtn').setAttribute('data-agent-state', 'spinning');
+            document.querySelector('.wheel-center').setAttribute('data-agent-state', 'spinning');
             document.getElementById('spinStatus').textContent = 'Spinning the wheel.';
             document.getElementById('winnerAnnouncement').textContent = '';
             document.getElementById('winnerDisplay').style.display = 'none';
@@ -829,6 +860,8 @@
                     }
                     spinning = false;
                     document.getElementById('spinBtn').disabled = false;
+                    document.getElementById('spinBtn').setAttribute('data-agent-state', 'ready');
+                    document.querySelector('.wheel-center').setAttribute('data-agent-state', 'ready');
                 }
             }
             
