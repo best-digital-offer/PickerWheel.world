@@ -134,7 +134,7 @@
         .segment-input { width: 100%; padding: 10px; margin: 5px 0; border: 1px solid #d1d5db; border-radius: 5px; }
         .color-input { width: 40px; height: 40px; border: none; border-radius: 5px; cursor: pointer; }
         .btn { padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 5px; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .btn-primary { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; }
+        .btn-primary { background: #1d4ed8; color: white; }
         .btn-secondary { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: white; }
         .btn-danger { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
@@ -142,6 +142,9 @@
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .spin-btn { width: 100%; padding: 20px; font-size: 20px; font-weight: bold; }
         .segment-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .segment-field { flex: 1 1 auto; min-width: 0; }
+        .segment-field .segment-input { width: 100%; }
+        .segment-color-field { flex: 0 0 auto; }
         .winner-display { background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%); border: 2px solid #16a34a; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .winner-display h3 { color: #15803d; margin-bottom: 10px; }
         .winner-text { font-size: 24px; font-weight: bold; color: #166534; }
@@ -161,8 +164,8 @@
         /* New styles for improved wheel */
         .wheel-wrapper { position: relative; display: inline-block; }
         .wheel-pointer { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #ef4444; clip-path: polygon(50% 0%, 0% 100%, 100% 100%); z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: white; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; z-index: 5; cursor: pointer; }
-        .wheel-center span { font-weight: bold; color: #3b82f6; font-size: 16px; }
+        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: white; border: 0; padding: 0; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; z-index: 5; cursor: pointer; font: inherit; appearance: none; }
+        .wheel-center span { font-weight: bold; color: #1d4ed8; font-size: 16px; }
         
         @media (max-width: 768px) {
             .container { padding: 10px; }
@@ -190,128 +193,146 @@
             .segment-row { flex-direction: column; }
             .color-input { width: 100%; height: 40px; }
         }
+        /* Accessibility and browser-agent affordances */
+        .skip-link { position: fixed; top: 12px; left: 12px; z-index: 10000; padding: 12px 16px; background: #ffffff; color: #1d4ed8; border: 2px solid #1d4ed8; border-radius: 6px; transform: translateY(-160%); }
+        .skip-link:focus { transform: translateY(0); }
+        .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+        :focus-visible { outline: 3px solid #1d4ed8; outline-offset: 3px; }
+        .segment-input, .color-input { min-height: 44px; }
+        .segment-input { min-width: 0; }
+        .segment-row .btn { min-width: 44px; min-height: 44px; }
+        .wheel-center:focus-visible { outline: 4px solid #1d4ed8; outline-offset: 5px; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+            .btn:hover, .template-card:hover { transform: none; }
+        }
     </style>
 </head>
 <body>
+    <a class="skip-link" href="#main-content">Skip to wheel controls</a>
     <div class="container">
-        <div class="header">
+        <main id="main-content" data-agent-scope="picker-wheel">
+        <header class="header">
             <h1>🎯 Random Picker Wheel - Spin the Wheel Generator</h1>
             <p>Best Online Name Picker, Decision Maker, Coin Flip, Random Number Generator & Prize Wheel</p>
-        </div>
+        </header>
 
         <!-- Ad Placeholder - Top Banner -->
         
 
 
         <div class="wheel-container">
-            <div class="wheel-section">
+            <section class="wheel-section" aria-label="Picker wheel visualization">
                 <div class="wheel-wrapper">
                     <div class="wheel-pointer"></div>
-                    <canvas id="wheelCanvas" class="wheel-canvas" width="500" height="500" style="touch-action: manipulation;"></canvas>
-                    <div class="wheel-center" onclick="spinWheel()">
-                        <span>SPIN</span>
-                    </div>
+                    <canvas id="wheelCanvas" class="wheel-canvas" width="500" height="500" role="img" aria-label="Picker wheel with four options. Use the Spin the Wheel button to choose one." aria-describedby="wheelInstructions" style="touch-action: manipulation;">Your picker wheel is shown visually. Use the labeled option fields and Spin the Wheel button to operate it.</canvas>
+                    <p id="wheelInstructions" class="sr-only">Edit an option's text or color with the labeled fields. Activate Spin the Wheel to select a result. The selected result is announced to screen readers.</p>
+                    <button type="button" class="wheel-center" onclick="spinWheel()" aria-label="Spin wheel" data-agent-action="spin-wheel" data-agent-target="spin-wheel">
+                        <span aria-hidden="true">SPIN</span>
+                    </button>
                 </div>
-                <div id="winnerDisplay" class="winner-display" style="display: none;">
+                <div id="winnerDisplay" class="winner-display" aria-live="off" data-agent-target="winner-display" style="display: none;">
                     <h3>🎉 Winner!</h3>
                     <div id="winnerText" class="winner-text"></div>
                 </div>
+                <p id="winnerAnnouncement" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+                <p id="spinStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
             </div>
 
-            <div class="controls-section">
+            <section class="controls-section" aria-label="Wheel controls" data-agent-scope="wheel-controls">
                 <div class="controls">
                     <h3>Wheel Options</h3>
-                    <div id="segmentsList"></div>
+                    <div id="segmentsList" aria-label="Editable wheel options" data-agent-target="wheel-options"></div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
-                        <button class="btn btn-secondary" onclick="addSegment()">+ Add Option</button>
-                        <button class="btn btn-secondary" onclick="randomizeColors()">🎨 Random Colors</button>
+                        <button type="button" class="btn btn-secondary" onclick="addSegment()" data-agent-action="add-option">+ Add Option</button>
+                        <button type="button" class="btn btn-secondary" onclick="randomizeColors()" data-agent-action="randomize-colors">🎨 Random Colors</button>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
-                        <button class="btn btn-secondary" onclick="saveWheel()">💾 Save Wheel</button>
-                        <button class="btn btn-secondary" onclick="shareWheel()">🔗 Share Wheel</button>
+                        <button type="button" class="btn btn-secondary" onclick="saveWheel()" data-agent-action="save-wheel">💾 Save Wheel</button>
+                        <button type="button" class="btn btn-secondary" onclick="shareWheel()" data-agent-action="share-wheel">🔗 Share Wheel</button>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;">
-                        <button class="btn btn-secondary" onclick="toggleFullscreen()">🔍 Fullscreen</button>
-                        <button class="btn btn-secondary" onclick="toggleSound()" id="soundBtn">🔊 Sound ON</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleFullscreen()" data-agent-action="toggle-fullscreen">🔍 Fullscreen</button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleSound()" id="soundBtn" aria-pressed="true" data-agent-action="toggle-sound">🔊 Sound ON</button>
                     </div>
-                    <button id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()">🎯 SPIN THE WHEEL</button>
+                    <button type="button" id="spinBtn" class="btn btn-primary spin-btn" onclick="spinWheel()" data-agent-action="spin-wheel" data-agent-target="spin-wheel">🎯 SPIN THE WHEEL</button>
                     
                     <div style="margin-top: 20px;">
                         <h4>Spin History</h4>
-                        <div id="spinHistory" style="max-height: 150px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 5px; font-size: 14px;">
+                        <div id="spinHistory" role="region" aria-label="Recent spin history" data-agent-target="spin-history" style="max-height: 150px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 5px; font-size: 14px;">
                             <p style="color: #6b7280; text-align: center;">No spins yet</p>
                         </div>
-                        <button class="btn btn-secondary" onclick="clearHistory()" style="width: 100%; margin-top: 10px;">Clear History</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearHistory()" data-agent-action="clear-history" style="width: 100%; margin-top: 10px;">Clear History</button>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
-        <div class="templates">
+        <div class="templates" data-agent-scope="picker-templates">
             <h2>Popular Random Picker Templates</h2>
             <div class="template-grid">
                 <div class="template-card">
                     <h3>🎓 Random Name Picker</h3>
                     <p>Perfect for classroom activities and student selection - the ultimate wheel of names</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('names')">Random Name Picker</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('names')" data-agent-action="load-template" data-template="names">Random Name Picker</button>
                 </div>
                 <div class="template-card">
                     <h3>🪙 Coin Flip Simulator</h3>
                     <p>Heads or tails? Make quick decisions with our virtual coin flipper</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('coinflip')">Flip a Coin</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('coinflip')" data-agent-action="load-template" data-template="coinflip">Flip a Coin</button>
                 </div>
                 <div class="template-card">
                     <h3>🔢 Random Number Generator</h3>
                     <p>Generate random numbers for games, raffles, and statistical sampling</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('rng')">RNG Generator</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('rng')" data-agent-action="load-template" data-template="rng">RNG Generator</button>
                 </div>
                 <div class="template-card">
                     <h3>🤔 Decision Maker Wheel</h3>
                     <p>Can't decide? Let the wheel make the choice for you with our decision wheel</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('decision')">Decision Maker Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('decision')" data-agent-action="load-template" data-template="decision">Decision Maker Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>🎁 Prize Wheel Spinner</h3>
                     <p>Create excitement with giveaways and contests using our lucky wheel</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('prize')">Prize Wheel Spinner</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('prize')" data-agent-action="load-template" data-template="prize">Prize Wheel Spinner</button>
                 </div>
                 <div class="template-card">
                     <h3>🍕 Food Decision Wheel</h3>
                     <p>End the dinner debate with random food selection and restaurant picker</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('food')">Food Decision Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('food')" data-agent-action="load-template" data-template="food">Food Decision Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>👥 Team Picker Wheel</h3>
                     <p>Randomly assign teams for sports and group activities with team picker</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('team')">Team Picker Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('team')" data-agent-action="load-template" data-template="team">Team Picker Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>🎨 Color Picker Wheel</h3>
                     <p>Random color selection for design and art projects with color wheel</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('colors')">Color Picker Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('colors')" data-agent-action="load-template" data-template="colors">Color Picker Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>✅ Yes No Wheel</h3>
                     <p>Simple binary decisions made easy with a quick spin of our yes or no wheel</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('yesno')">Yes No Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('yesno')" data-agent-action="load-template" data-template="yesno">Yes No Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>🔤 Letter Picker Wheel</h3>
                     <p>Random letter selection for games, education, and creative projects</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('letters')">Letter Picker Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('letters')" data-agent-action="load-template" data-template="letters">Letter Picker Wheel</button>
                 </div>
                 <div class="template-card">
                     <h3>🎲 Dice Roll Simulator</h3>
                     <p>Virtual dice rolling for games and probability exercises</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('dice')">Dice Roller</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('dice')" data-agent-action="load-template" data-template="dice">Dice Roller</button>
                 </div>
                 <div class="template-card">
                     <h3>🎯 Lucky Wheel Spinner</h3>
                     <p>Try your luck with our fortune wheel for games and random selection</p>
-                    <button class="btn btn-primary" onclick="loadTemplate('lucky')">Lucky Wheel</button>
+                    <button type="button" class="btn btn-primary" onclick="loadTemplate('lucky')" data-agent-action="load-template" data-template="lucky">Lucky Wheel</button>
                 </div>
             </div>
         </div>
@@ -483,9 +504,11 @@
             </div>
         </div>
 
+        </main>
+
         <!-- Footer with required links -->
         <!-- Top Navigation -->
-        <nav style="background: white; padding: 15px 0; margin-bottom: 40px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <nav aria-label="Site navigation" data-agent-scope="site-navigation" style="background: white; padding: 15px 0; margin-bottom: 40px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
             <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: flex-end; gap: 30px; flex-wrap: wrap;">
                 <a href="blog.html" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Blog</a>
                 <a href="privacy-policy.html" style="color: #3b82f6; text-decoration: none; font-weight: 500;">Privacy Policy</a>
@@ -594,29 +617,83 @@
 
         function renderSegments() {
             const container = document.getElementById('segmentsList');
-            container.innerHTML = '';
-            
+            container.replaceChildren();
             segments.forEach((segment, index) => {
+                const optionNumber = index + 1;
                 const row = document.createElement('div');
                 row.className = 'segment-row';
-                row.innerHTML = `
-                    <input type="text" class="segment-input" value="${segment.text}" 
-                           onchange="updateSegment(${index}, this.value)">
-                    <input type="color" class="color-input" value="${segment.color}" 
-                           onchange="updateColor(${index}, this.value)">
-                    <button class="btn btn-danger" onclick="removeSegment(${index})">×</button>
-                `;
+                row.setAttribute('role', 'group');
+                row.setAttribute('aria-label', 'Wheel option ' + optionNumber);
+                row.dataset.agentOption = String(optionNumber);
+                const textField = document.createElement('div');
+                textField.className = 'segment-field';
+                const textLabel = document.createElement('label');
+                textLabel.className = 'sr-only';
+                textLabel.htmlFor = 'option-text-' + optionNumber;
+                textLabel.textContent = 'Option ' + optionNumber + ' text';
+                const textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.id = 'option-text-' + optionNumber;
+                textInput.className = 'segment-input';
+                textInput.value = segment.text;
+                textInput.setAttribute('aria-label', 'Option ' + optionNumber + ' text');
+                textInput.setAttribute('autocomplete', 'off');
+                textInput.dataset.agentTarget = 'option-text-' + optionNumber;
+                textInput.addEventListener('input', () => updateSegment(index, textInput.value));
+                textField.append(textLabel, textInput);
+                const colorField = document.createElement('div');
+                colorField.className = 'segment-color-field';
+                const colorLabel = document.createElement('label');
+                colorLabel.className = 'sr-only';
+                colorLabel.htmlFor = 'option-color-' + optionNumber;
+                colorLabel.textContent = 'Option ' + optionNumber + ' color';
+                const colorInput = document.createElement('input');
+                colorInput.type = 'color';
+                colorInput.id = 'option-color-' + optionNumber;
+                colorInput.className = 'color-input';
+                colorInput.value = segment.color;
+                colorInput.setAttribute('aria-label', 'Option ' + optionNumber + ' color');
+                colorInput.dataset.agentTarget = 'option-color-' + optionNumber;
+                colorInput.addEventListener('input', () => updateColor(index, colorInput.value));
+                colorField.append(colorLabel, colorInput);
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn btn-danger';
+                removeButton.textContent = '×';
+                removeButton.setAttribute('aria-label', 'Remove option ' + optionNumber);
+                removeButton.title = 'Remove option ' + optionNumber;
+                removeButton.dataset.agentAction = 'remove-option';
+                removeButton.dataset.option = String(optionNumber);
+                removeButton.addEventListener('click', () => removeSegment(index));
+                row.append(textField, colorField, removeButton);
                 container.appendChild(row);
             });
+            updateWheelAccessibility();
+        }
+
+        function updateWheelAccessibility() {
+            const wheelCanvas = document.getElementById('wheelCanvas');
+            if (!wheelCanvas) return;
+            if (segments.length === 0) {
+                wheelCanvas.setAttribute('aria-label', 'Picker wheel is empty. Add an option to get started.');
+                return;
+            }
+            const optionNames = segments.map((segment, index) => {
+                const name = String(segment.text || '').trim();
+                return name || 'Option ' + (index + 1);
+            });
+            wheelCanvas.setAttribute('aria-label', 'Picker wheel with ' + segments.length + ' options: ' + optionNames.join(', ') + '. Activate Spin the Wheel to select one.');
         }
 
         function updateSegment(index, text) {
             segments[index].text = text;
+            updateWheelAccessibility();
             drawWheel();
         }
 
         function updateColor(index, color) {
             segments[index].color = color;
+            updateWheelAccessibility();
             drawWheel();
         }
 
@@ -708,15 +785,20 @@
         }
         
         function spinWheel() {
-            if (spinning || segments.length === 0) return;
+            if (spinning || segments.length === 0) {
+                if (segments.length === 0) document.getElementById('spinStatus').textContent = 'Add at least one option before spinning.';
+                return;
+            }
             
             spinning = true;
             document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinStatus').textContent = 'Spinning the wheel.';
+            document.getElementById('winnerAnnouncement').textContent = '';
             document.getElementById('winnerDisplay').style.display = 'none';
             playSpinSound();
             
             const spinAmount = 360 * 5 + Math.random() * 360;
-            const duration = 3000;
+            const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 3000;
             const startTime = Date.now();
             const startRotation = rotation;
             
@@ -759,6 +841,8 @@
             document.getElementById('winnerText').textContent = winner.text;
             document.getElementById('winnerText').style.color = winner.color;
             document.getElementById('winnerDisplay').style.display = 'block';
+            document.getElementById('winnerAnnouncement').textContent = 'Winner selected: ' + winner.text;
+            document.getElementById('spinStatus').textContent = 'Spin complete.';
             
             // Play victory sound
             playWinSound();
@@ -772,18 +856,34 @@
         
         function updateHistoryDisplay() {
             const historyDiv = document.getElementById('spinHistory');
+            historyDiv.replaceChildren();
             if (spinHistory.length === 0) {
-                historyDiv.innerHTML = '<p style="color: #6b7280; text-align: center;">No spins yet</p>';
-            } else {
-                historyDiv.innerHTML = spinHistory.map((item, index) => 
-                    `<div style="padding: 5px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between;">
-                        <span style="color: ${item.color}; font-weight: bold;">${item.result}</span>
-                        <span style="color: #6b7280; font-size: 12px;">${item.time}</span>
-                    </div>`
-                ).join('');
+                const empty = document.createElement('p');
+                empty.style.color = '#6b7280';
+                empty.style.textAlign = 'center';
+                empty.textContent = 'No spins yet';
+                historyDiv.appendChild(empty);
+                return;
             }
+            spinHistory.forEach(item => {
+                const row = document.createElement('div');
+                row.style.padding = '5px';
+                row.style.borderBottom = '1px solid #e5e7eb';
+                row.style.display = 'flex';
+                row.style.justifyContent = 'space-between';
+                const result = document.createElement('span');
+                result.style.color = item.color;
+                result.style.fontWeight = 'bold';
+                result.textContent = item.result;
+                const time = document.createElement('span');
+                time.style.color = '#6b7280';
+                time.style.fontSize = '12px';
+                time.textContent = item.time;
+                row.append(result, time);
+                historyDiv.appendChild(row);
+            });
         }
-        
+
         function clearHistory() {
             spinHistory = [];
             updateHistoryDisplay();
@@ -956,6 +1056,7 @@
         function toggleSound() {
             soundEnabled = !soundEnabled;
             document.getElementById('soundBtn').textContent = soundEnabled ? '🔊 Sound ON' : '🔇 Sound OFF';
+            document.getElementById('soundBtn').setAttribute('aria-pressed', String(soundEnabled));
         }
         
         // Load shared wheel from URL
