@@ -30,3 +30,12 @@ PickerWheel.world is a free browser-based random picker wheel for choosing names
 
 ## Editorial notes
 The guides are practical educational resources. Random selection is appropriate for many low-stakes activities, but should not replace consent, safety procedures, legal requirements, or expert judgment for high-stakes decisions. Please use the live page as the source of truth for current tool functionality and site policies.
+
+## New low-competition learning guides
+- https://www.pickerwheel.world/blog/random-thing-picker-ideas.html — Random Thing Picker: Ideas, Lists, and Ways to Use a Wheel: Choose activities, drawing prompts, chores, and games with practical list-building tips.
+- https://www.pickerwheel.world/blog/letter-picker-wheel-activities.html — Letter Picker Wheel: Word Games, Classroom Activities, and Prompts: Use letters for vocabulary, spelling, storytelling, and classroom challenges.
+- https://www.pickerwheel.world/blog/country-picker-wheel-games.html — Country Picker Wheel: Geography Games, Quizzes, and Learning Ideas: Turn country choices into respectful geography games and source-backed research activities.
+- https://www.pickerwheel.world/blog/random-color-picker-wheel.html — Random Color Picker Wheel: Palettes, Prompts, and Creative Challenges: Choose creative constraints while keeping contrast and accessibility in mind.
+- https://www.pickerwheel.world/blog/random-letter-picker-wheel.html — Random Letter Picker Wheel: Spelling, Writing, and Quick Learning Games: A practical guide to spelling, vocabulary, and writing games using a random letter.
+- https://www.pickerwheel.world/blog/random-word-picker-wheel.html — Random Word Picker Wheel: Vocabulary Games and Writing Prompts: Build useful vocabulary lists for storytelling, language learning, and word games.
+- https://www.pickerwheel.world/blog/random-food-picker-wheel-ideas.html — Random Food Picker Wheel: Meal Ideas Without the Dinner Debate: Choose meal inspiration after considering allergies, budget, ingredients, and preferences.
