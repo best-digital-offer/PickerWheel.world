@@ -24,3 +24,20 @@ New articles will have distinct title and description, canonical URL, Article/Bl
 - State how to prepare and clean entry lists, what each wheel is good for, classroom/game examples, accessibility and privacy considerations, and limitations.
 - Do not target branded navigational phrases such as “picker wheel com” or irrelevant product terms that happen to include “picker”.
 - Recheck Search Console after indexing to learn which long-tail queries actually earn impressions and clicks.
+
+
+## Added on 2026-10-13: relevant low-competition queries
+
+The newest CSV was reviewed and filtered for relevant topics with reported competition 0.00. These terms are selected for content fit, not just because their score is low. New articles target:
+
+| Keyword | Volume | Competition | Target |
+|---|---:|---:|---|
+| random thing picker | 1,900 | 0.00 | /blog/random-thing-picker-ideas.html |
+| letter picker wheel | 1,000 | 0.00 | /blog/letter-picker-wheel-activities.html |
+| country picker wheel | 880 | 0.00 | /blog/country-picker-wheel-games.html |
+| random color picker wheel | 260 | 0.00 | /blog/random-color-picker-wheel.html |
+| random letter picker wheel | 140 | 0.00 | /blog/random-letter-picker-wheel.html |
+| random word picker wheel | 110 | 0.00 | /blog/random-word-picker-wheel.html |
+| random food picker wheel | 110 | 0.00 | /blog/random-food-picker-wheel-ideas.html |
+
+These are dataset figures from the uploaded keyword research CSV, not independent measurements or guaranteed rankings. The existing blog topics for names, yes/no, number picking, teams, classroom groups, general color-wheel design, restaurant choices, and privacy were left intact. New pages link to the live tool and related guides, answer common questions, and give practical lists or activity instructions.
